@@ -1,19 +1,19 @@
 package de.neighbourly.backend.controller;
 import de.neighbourly.backend.dto.RegistrationRequest;
+import de.neighbourly.backend.entity.User;
+import de.neighbourly.backend.repository.UserRepository;
 import de.neighbourly.backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     private UserService userService;
+    private UserRepository user;
 
     public AuthController(UserService userService) {
         this.userService = userService;
@@ -22,5 +22,10 @@ public class AuthController {
     public ResponseEntity<String> register(@Valid @RequestBody RegistrationRequest request) {
         userService.registerUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body("Registrierung erfolgreich");
+    }
+
+    @GetMapping("/verify")
+    public  ResponseEntity<String> verify(@RequestParam String token) {
+       return null;
     }
 }

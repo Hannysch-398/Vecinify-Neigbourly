@@ -32,7 +32,12 @@ public class UserService {
 
         // Jetzt ist passwordEncoder NICHT mehr null
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        String token = java.util.UUID.randomUUID().toString();
+        newUser.setVerificationToken(token);
         newUser.setEmailVerified(false);
+
+        System.out.println("Verifizierungs-Link: http://localhost:8080/api/auth/verify?token=" + token);
 
         userRepository.save(newUser);
     }
