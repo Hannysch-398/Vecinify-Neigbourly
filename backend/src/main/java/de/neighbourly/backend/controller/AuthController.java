@@ -1,9 +1,14 @@
 package de.neighbourly.backend.controller;
+import de.neighbourly.backend.dto.LoginRequest;
 import de.neighbourly.backend.dto.RegistrationRequest;
+import de.neighbourly.backend.security.CustomUserDetailsService;
+import de.neighbourly.backend.security.JwtService;
 import de.neighbourly.backend.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +21,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final CustomUserDetailsService userDetailsService;
     private final JwtService jwtService;
-    private final org.springframework.security.authentication.AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegistrationRequest request) {
@@ -27,15 +33,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody de.neighbourly.backend.dto.LoginRequest request) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+
         authenticationManager.authenticate(
-                new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
-                        request.getEmail(), request.getPassword()
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
                 )
         );
 
-        var user = userService.loadUserByUsername(request.getEmail());
-        String token = jwtService.generateToken(user);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+
+        String token = jwtService.generateToken(userDetails);
 
         return ResponseEntity.ok(token);
     }
