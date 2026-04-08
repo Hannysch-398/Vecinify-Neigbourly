@@ -20,7 +20,4 @@ public class User {
     private String password;
 
     private boolean emailVerified = false;
-
-    @Column(unique = true, nullable = false)
-    private String username;
 }

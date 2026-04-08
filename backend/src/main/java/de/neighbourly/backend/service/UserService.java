@@ -24,13 +24,8 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email bereits vergeben");
         }
 
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username bereits vergeben");
-        }
-
         User newUser = new User();
         newUser.setEmail(request.getEmail());
-        newUser.setUsername(request.getUsername());
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
         newUser.setEmailVerified(false);
 
