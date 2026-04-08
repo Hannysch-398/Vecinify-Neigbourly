@@ -1,5 +1,6 @@
 package de.neighbourly.backend.service;
 
+import de.neighbourly.backend.dto.LoginRequest;
 import de.neighbourly.backend.dto.RegistrationRequest;
 import de.neighbourly.backend.entity.User;
 import de.neighbourly.backend.repository.UserRepository;
@@ -19,7 +20,6 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
 
-
     }
 
     public void registerUser(RegistrationRequest request) {
@@ -35,5 +35,11 @@ public class UserService {
         newUser.setEmailVerified(false);
 
         userRepository.save(newUser);
+    }
+    public void loginUser(LoginRequest request) {
+        if (!userRepository.existsByEmail(request.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Die eingegebene daten sind falsch!");
+        }
+
     }
 }
