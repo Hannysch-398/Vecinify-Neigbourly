@@ -69,8 +69,8 @@
       <p class="terms-text">
         By signing up, I agree with the Terms of Use& Privacy Policy
       </p>
-      <button class ="btn btn-primary w-100" type="submit" [disabled]="registerForm().submitting()">Sign Up
-
+      <button class ="btn btn-primary w-100" type="submit" [disabled]="registerForm().submitting()">
+        {{ isSignUp() ? 'Sign Up' : 'Sign In' }}
       </button>
     </div>
 
