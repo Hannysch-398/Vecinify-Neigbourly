@@ -24,7 +24,7 @@ public class AuthController {
     @PutMapping("/{id}/change-password")
     public ResponseEntity<String> changePassword(
             @PathVariable Long id,
-            @RequestBody PasswordChangeRequest request
+            @Valid @RequestBody PasswordChangeRequest request
     ) {
         userService.changePassword(id, request);
         return ResponseEntity.ok("Passwort erfolgreich geändert!");
