@@ -1,5 +1,6 @@
 package de.neighbourly.backend.service;
 
+import de.neighbourly.backend.dto.PasswordChangeRequest;
 import de.neighbourly.backend.dto.RegistrationRequest;
 import de.neighbourly.backend.entity.User;
 import de.neighbourly.backend.entity.VerificationToken;
@@ -10,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
+
 @Service
 public class UserService {
 
@@ -56,5 +60,19 @@ public class UserService {
         userRepository.save(user);
 
         tokenRepository.delete(verificationToken);
+    }
+
+    public void changePassword(Long userId, PasswordChangeRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User nicht gefunden"));
+        if (Objects.equals(request.getOldPassword(), request.getNewPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Das neue Passwort darf nicht dem alten Passwort entsprechen");
+        }
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Das alte Passwort ist falsch");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 }

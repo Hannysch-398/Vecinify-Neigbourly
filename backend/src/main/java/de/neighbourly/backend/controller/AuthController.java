@@ -1,4 +1,5 @@
 package de.neighbourly.backend.controller;
+import de.neighbourly.backend.dto.PasswordChangeRequest;
 import de.neighbourly.backend.dto.RegistrationRequest;
 import de.neighbourly.backend.entity.User;
 import de.neighbourly.backend.repository.UserRepository;
@@ -28,5 +29,12 @@ public class AuthController {
     public ResponseEntity<String> verify(@RequestParam String token) {
         userService.verifyUser(token);
         return ResponseEntity.ok("E-Mail erfolgreich verifiziert! Du kannst dich jetzt einloggen.");
+    @PutMapping("/{id}/change-password")
+    public ResponseEntity<String> changePassword(
+            @PathVariable Long id,
+            @Valid @RequestBody PasswordChangeRequest request
+    ) {
+        userService.changePassword(id, request);
+        return ResponseEntity.ok("Passwort erfolgreich geändert!");
     }
 }
