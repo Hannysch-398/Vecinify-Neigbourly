@@ -7,6 +7,7 @@ import de.neighbourly.backend.entity.VerificationToken;
 import de.neighbourly.backend.repository.UserRepository;
 import de.neighbourly.backend.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -74,5 +75,16 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
+    }
+
+    public void deleteUserById(Long userId){
+        userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User " + userId +  " nicht gefunden"));
+        try{
+            userRepository.deleteById(userId);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
 }
