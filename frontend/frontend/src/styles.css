@@ -1,4 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
 :root {
   --primary-color: #1d7ddf;
   --primary-color-hover: #0f3f70;
@@ -37,4 +39,5 @@
     text-decoration: none;
   }
 }
+
 
