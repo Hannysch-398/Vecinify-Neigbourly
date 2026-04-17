@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="auth-container">
+
+  <!-- TOGGLE -->
+  <div class="tabs-wrapper d-flex justify-content-center mb-4">
+
+    <div class="tab-container d-flex rounded">
+
+      <div class="tabs">
+        <button (click)="showSignUp()">Sign Up</button>
+        <button (click)="showSignIn()">Sign In</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONTENT SWITCH -->
+  @if (isSignUp()) {
+    <app-register-form />
+  } @else {
+    <app-sign-in />
+  }
+
+</div>

@@ -1,6 +1,7 @@
 import {Component, signal, inject, computed} from '@angular/core';
-import {RegisterFormService} from '../Service/registerForm.service';
+
 import {form, FormField, pattern, required} from '@angular/forms/signals';
+import {RegisterFormService} from '../../Service/registerForm.service';
 
 
 interface RegisterFormModel {
