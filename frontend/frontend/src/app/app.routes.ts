@@ -3,7 +3,9 @@ import {RegisterForm} from './Authentification/RegisterForm/RegisterForm';
 
 
 export const routes: Routes = [
-
-  { path: 'register', component: RegisterForm, title: 'Register' },  // ← Root-Pfad
-  { path: '**', redirectTo: '' },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./profile/profile').then(m => m.Profile)
+  }
 ];
