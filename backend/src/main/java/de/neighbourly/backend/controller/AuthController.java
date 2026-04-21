@@ -9,10 +9,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -32,7 +32,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -41,9 +40,14 @@ public class AuthController {
         );
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-
         String token = jwtService.generateToken(userDetails);
 
         return ResponseEntity.ok(token);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verify(@RequestParam String token) {
+        userService.verifyUser(token);
+        return ResponseEntity.ok("E-Mail erfolgreich verifiziert! Du kannst dich jetzt einloggen.");
     }
 }
