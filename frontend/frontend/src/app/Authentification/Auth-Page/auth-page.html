@@ -24,10 +24,10 @@
 
 
   <!-- CONTENT SWITCH -->
-  @if (isSignUp()) {
-    <app-register-form />
+  @if (!isSignUp()) {
+    <app-sign-in/>
   } @else {
-    <app-sign-in />
+    <app-register-form/>
   }
 
 </div>

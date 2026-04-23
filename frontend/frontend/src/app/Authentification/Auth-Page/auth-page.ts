@@ -12,7 +12,7 @@ import {SignInFormComponent} from '../SignInForm/SignInForm';
 })
 export class AuthPageComponent {
 
-  isSignUp = signal(true);
+  isSignUp = signal(false);
 
   showSignUp() {
     this.isSignUp.set(true);
