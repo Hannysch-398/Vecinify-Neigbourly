@@ -41,7 +41,7 @@ export class VerifyEmail implements OnInit {
           this.errorMessage = error.error;
         } else {
           this.errorMessage =
-            error.error?.message || 'Ein unbekannter Fehler ist aufgetreten.';
+            error.error?.message || 'Link ungültig oder abgelaufen.';
         }
       },
     });
