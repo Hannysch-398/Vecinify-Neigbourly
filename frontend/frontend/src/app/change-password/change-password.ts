@@ -17,6 +17,9 @@ import {firstValueFrom} from 'rxjs';
 })
 export class ChangePassword {
   regexp = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!_])(?=\S+$).{8,}$/;
+  showOldPassword = signal(false);
+  showNewPassword = signal(false);
+  showRepeatPassword = signal(false);
 
   private activatedRoute = inject(ActivatedRoute);
   userId = this.activatedRoute.snapshot.params['id'];
