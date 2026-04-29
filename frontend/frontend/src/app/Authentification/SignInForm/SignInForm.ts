@@ -47,7 +47,7 @@ export class SignInFormComponent {
     const payload: LoginRequest = this.model();
 
     this.authService.login(payload).subscribe({
-      next: () => this.router.navigate(['/profile']),
+      next: () => this.router.navigate(['/profile']), //'/profile' muss in späteren Sprints zum Pfad zur Hauptseite ausgetauscht werden
       error: err => {
         if (err.status === 401) {
           this.backendError.set('E-Mail oder Passwort ist falsch.');
