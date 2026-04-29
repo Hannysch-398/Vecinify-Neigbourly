@@ -1,17 +1,14 @@
-import {Component, computed, inject, signal} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {form, FormField, pattern, required} from '@angular/forms/signals';
-import {GenericButton} from '../components/generic-button/generic-button';
-import {UserService} from '../service/user-service';
-import {ActivatedRoute} from '@angular/router';
-import {firstValueFrom} from 'rxjs';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { form, FormField, pattern, required } from '@angular/forms/signals';
+import { GenericButton } from '../components/generic-button/generic-button';
+import { UserService } from '../service/user-service';
+import { ActivatedRoute } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-change-password',
-  imports: [
-    FormField,
-    GenericButton
-  ],
+  imports: [FormField, GenericButton],
   templateUrl: './change-password.html',
   styleUrl: './change-password.css',
 })
@@ -22,7 +19,7 @@ export class ChangePassword {
   showRepeatPassword = signal(false);
 
   private activatedRoute = inject(ActivatedRoute);
-  userId = this.activatedRoute.snapshot.params['id'];
+  userId = input.required<string>();
 
   loading = signal(false);
   successMessage = signal('');
@@ -40,12 +37,12 @@ export class ChangePassword {
   });
 
   changePasswordForm = form(this.passwordModel, (p) => {
-    required(p.password, {message: 'Bitte das ursprüngliche Passwort eingeben'});
-    required(p.newPassword, {message: 'Bitte das neue Passwort eingeben'});
+    required(p.password, { message: 'Bitte das ursprüngliche Passwort eingeben' });
+    required(p.newPassword, { message: 'Bitte das neue Passwort eingeben' });
     pattern(p.newPassword, this.regexp, {
-      message: 'Das eingegebene Passwort erfüllt nicht die Anforderungen.'
+      message: 'Das eingegebene Passwort erfüllt nicht die Anforderungen.',
     });
-    required(p.repeatPassword, {message: 'Bitte das neue Passwort wiederholen'});
+    required(p.repeatPassword, { message: 'Bitte das neue Passwort wiederholen' });
   });
 
   passwordsMatch = computed(() => {
@@ -117,9 +114,7 @@ export class ChangePassword {
     }
 
     const message =
-      typeof error.error === 'string'
-        ? error.error
-        : error.error?.message || error.message;
+      typeof error.error === 'string' ? error.error : error.error?.message || error.message;
 
     if (error.status === 404) {
       this.backendError.set('Der Benutzer wurde nicht gefunden.');
@@ -134,7 +129,9 @@ export class ChangePassword {
       }
 
       if (message?.includes('Das neue Passwort darf nicht dem alten Passwort entsprechen')) {
-        this.newPasswordBackendError.set('Das neue Passwort darf nicht dem alten Passwort entsprechen.');
+        this.newPasswordBackendError.set(
+          'Das neue Passwort darf nicht dem alten Passwort entsprechen.',
+        );
         this.backendError.set('');
         return;
       }
@@ -165,14 +162,14 @@ export class ChangePassword {
 
     const data = {
       oldPassword: password,
-      newPassword
+      newPassword,
     };
 
     this.loading.set(true);
 
     try {
-      await firstValueFrom(this.userService.submitPasswords(data, this.userId));
-
+      await firstValueFrom(this.userService.submitPasswords(data, this.userId()));
+      this.successMessage.set('Das Passwort wurde erfolgreich geändert.');
       this.resetForm();
       this.clearMessages();
       this.successMessage.set('Das Passwort wurde erfolgreich geändert.');
