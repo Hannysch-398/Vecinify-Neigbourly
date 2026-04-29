@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class VerifyEmailService {
-  private baseUrl = 'http://localhost:8080/verify-email';
+  private baseUrl = 'http://localhost:8080/api/auth/verify';
 
   constructor(private http: HttpClient) {}
 
